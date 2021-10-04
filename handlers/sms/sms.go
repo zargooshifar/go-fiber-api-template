@@ -8,7 +8,6 @@ import (
 	"time"
 )
 
-
 func SendPin(number string) (string, error) {
 	pin := 10000 + rand.Intn(89999)
 

@@ -5,7 +5,6 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
-	"log"
 	"msgv2-back/database"
 	"msgv2-back/errors"
 	"msgv2-back/models"
@@ -90,7 +89,6 @@ func GenerateRefreshClaims(cl *models.Claims) string {
 // SecureAuth returns a middleware which secures all the private routes
 func Secure(roles models.ROLES) func(*fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
-		log.Println("secure")
 		reqToken := c.Get("Authorization")
 		splitToken := strings.Split(reqToken, "Bearer ")
 		accessToken := splitToken[1]
@@ -183,6 +181,7 @@ func RefreshTokens(r *models.RefreshToken) (string, string, string) {
 		return "", "", errors.REFRESH_TOKEN_NOT_EXIST
 	}
 
+	//delete previous refresh key
 	database.DB.Delete(dbtoken)
 	user := new(models.User)
 	database.DB.Where(models.User{Base: models.Base{
@@ -195,30 +194,22 @@ func RefreshTokens(r *models.RefreshToken) (string, string, string) {
 }
 
 func GenerateHashPassword(password []byte) ([]byte, error) {
-	start := time.Now()
 
 	hash, err := bcrypt.GenerateFromPassword(
 		password,
 		bcrypt.MinCost+5,
 	)
-	total := time.Since(start)
 
-	log.Println("password hashed in %s", total)
 	return hash, err
 }
 
 func VerifyPassword(hashPassword string, password string) bool {
-	start := time.Now()
 
 	byteHash := []byte(hashPassword)
 	bytePlain := []byte(password)
 	err := bcrypt.CompareHashAndPassword(byteHash, bytePlain)
-	total := time.Since(start)
-
-	log.Println("compare password hashed in %s", total)
 
 	if err != nil {
-		log.Println(err)
 		return false
 	}
 

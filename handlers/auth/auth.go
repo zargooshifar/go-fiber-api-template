@@ -3,7 +3,6 @@ package auth
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
-	"log"
 	"msgv2-back/database"
 	"msgv2-back/errors"
 	"msgv2-back/handlers/auth/utils"
@@ -124,10 +123,6 @@ func CompleteRegister(c *fiber.Ctx) error {
 		})
 	}
 
-	log.Println(reg.Verification)
-	log.Println(reg.FirstName)
-	log.Println(reg.LastName)
-	log.Println(reg.Password)
 	// validate if the email, username and password are in correct format
 	regErrors := utils.ValidateRegister(reg)
 	if regErrors.Err {
@@ -176,8 +171,6 @@ func CompleteRegister(c *fiber.Ctx) error {
 	//delete verification...
 	database.DB.Delete(verification)
 
-	log.Println("user created!")
-
 	// setting up the authorization cookies
 	accessToken, refreshToken := utils.GenerateTokens(user)
 
@@ -208,10 +201,8 @@ func Refresh(c *fiber.Ctx) error {
 }
 
 func Logout(c *fiber.Ctx) error {
-	user := c.Locals("user")
-	id := c.Locals("id")
-	log.Println("logout")
-	log.Println(user)
-	log.Println(id)
+
+	//TODO: should remove current refresh key user is using
+	//TODO: additionally we can add a functionality to delete all user refresh tokens, to remove all active logins
 	return c.SendStatus(fiber.StatusOK)
 }

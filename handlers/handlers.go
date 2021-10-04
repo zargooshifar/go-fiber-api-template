@@ -3,7 +3,6 @@ package handlers
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
-	"log"
 	"msgv2-back/database"
 	"msgv2-back/errors"
 	"msgv2-back/models"
@@ -20,7 +19,6 @@ func NotFound(c *fiber.Ctx) error {
 func filterQuery(c *fiber.Ctx) string {
 	rawParams := string(c.Request().URI().QueryString())
 	params := strings.Split(rawParams, "&")
-	log.Println(rawParams)
 	query := ""
 	for index, part := range params {
 		for k, r := range part {
@@ -28,9 +26,9 @@ func filterQuery(c *fiber.Ctx) string {
 				if (len(part[k+1:]) == 0) || (part[:k] == "limit") || (part[:k] == "page") {
 					continue
 				}
-				value ,_ := url.QueryUnescape(part[k+1:])
+				value, _ := url.QueryUnescape(part[k+1:])
 				query += part[:k] + " LIKE '%" + value + "%'"
-				if index < len(params) - 1 {
+				if index < len(params)-1 {
 					query += " AND "
 				}
 			}
@@ -56,7 +54,6 @@ func GetItems(item interface{}) func(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{
 			"count":   count,
 			"results": items,
-
 		})
 	}
 }

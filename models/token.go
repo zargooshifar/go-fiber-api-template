@@ -16,5 +16,4 @@ type (
 	RefreshToken struct {
 		RefreshToken string `json:"refresh"`
 	}
-
 )

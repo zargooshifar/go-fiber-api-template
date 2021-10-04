@@ -24,12 +24,11 @@ func (list ROLES) Has(role string) bool {
 type (
 	User struct {
 		Base
-		Username  string    `json:"username"`
-		Password  string    `json:"-"`
-		FirstName string    `json:"first_name"`
-		LastName  string    `json:"last_name"`
-		Role      string    `json:"role"`
-
+		Username  string `json:"username"`
+		Password  string `json:"-"`
+		FirstName string `json:"first_name"`
+		LastName  string `json:"last_name"`
+		Role      string `json:"role"`
 	}
 
 	Login struct {
