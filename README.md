@@ -6,7 +6,8 @@ starter pack for building backend with go and fiber, with jwt auth
 
 there are few steps for authentication
 steps:
-##
+
+
 ## check if user exists in our db, by it's phone number:
 route: /api/auth/checkusername
 
@@ -30,7 +31,7 @@ route: /api/auth/verify
 get the user info and verification_id from ui
 route: /api/auth/completeregistration
 
-##
+
 
 
 
