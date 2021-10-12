@@ -9,6 +9,7 @@ import (
 )
 
 func SendPin(number string) (string, error) {
+        //TODO: this is not generate random number which is good for testing! fix this for production
 	pin := 10000 + rand.Intn(89999)
 
 	//delete previous verifications
